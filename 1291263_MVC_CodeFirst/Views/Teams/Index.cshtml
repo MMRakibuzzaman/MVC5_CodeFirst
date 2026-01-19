@@ -1,0 +1,50 @@
+﻿@model IEnumerable<_1291263_MVC_CodeFirst.Models.Team>
+
+@{
+    ViewBag.Title = "Teams";
+}
+
+<div class="container fade-in">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-white font-weight-bold">Team Management</h2>
+
+        @if (User.IsInRole("Admin"))
+        {
+            @Html.ActionLink("+ Create New Team", "Create", null, new { @class = "btn btn-glass" })
+        }
+    </div>
+
+    <div class="glass-panel p-4">
+        <table class="table table-borderless text-white mb-0">
+            <thead style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TeamName)
+                    </th>
+                    <th class="text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        <td class="align-middle">
+                            <span style="font-size: 1.1rem;">@Html.DisplayFor(modelItem => item.TeamName)</span>
+                        </td>
+                        <td class="text-right">
+                            @if (User.IsInRole("Admin"))
+                            {
+                                @Html.ActionLink("Edit", "Edit", new { id = item.TeamId }, new { @class = "btn btn-sm btn-glass me-2" })
+                                @Html.ActionLink("Delete", "Delete", new { id = item.TeamId }, new { @class = "btn btn-sm btn-outline-danger" })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Details", "Details", new { id = item.TeamId }, new { @class = "btn btn-sm btn-glass" })
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

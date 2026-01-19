@@ -1,0 +1,240 @@
+﻿@model IEnumerable<_1291263_MVC_CodeFirst.Models.Jersey>
+
+@{
+    ViewBag.Title = "Kits";
+}
+
+<div class="container-fluid fade-in">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="text-white font-weight-bold" style="text-shadow: 0 0 10px rgba(255,255,255,0.3);">Kits Collection</h2>
+        </div>
+        @if (User.IsInRole("Admin"))
+        {
+            <button class="btn btn-glass btn-lg" onclick="openCreateModal()">
+                <i class="glyphicon glyphicon-plus"></i> + Add New Kit
+            </button>
+        }
+    </div>
+
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="glass-card">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center"
+                             style="width: 40px; height: 40px; background: rgba(255,255,255,0.1); margin-right: 12px; border: 1px solid rgba(255,255,255,0.2);">
+                            <span style="font-size: 1.2rem;">👕</span>
+                        </div>
+
+                        <div style="flex-grow: 1;">
+                            <h5 class="m-0 font-weight-bold" style="line-height: 1.2;">@item.Team.TeamName</h5>
+                            <small class="text-muted">@item.ReleaseDate.ToString("MMM dd, yyyy")</small>
+                        </div>
+
+                        <div class="ml-2">
+                            @if (item.IsAvailable)
+                            {
+                                <span class="px-3 py-1 font-weight-bold"
+                                      style="background: rgba(0, 200, 81, 0.15); border: 1px solid rgba(0, 200, 81, 0.5); color: #00e676; border-radius: 12px; font-size: 0.75rem; letter-spacing: 0.5px;">
+                                    IN STOCK
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="px-3 py-1 font-weight-bold"
+                                      style="background: rgba(255, 68, 68, 0.15); border: 1px solid rgba(255, 68, 68, 0.5); color: #ff5252; border-radius: 12px; font-size: 0.75rem; letter-spacing: 0.5px;">
+                                    SOLD OUT
+                                </span>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="text-center mb-3" style="position: relative; overflow: hidden; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05);">
+                        <img src="~/Images/@item.Picture"
+                             style="width: 100%; height: 250px; object-fit: cover; transition: transform 0.5s ease;"
+                             onmouseover="this.style.transform='scale(1.05)'"
+                             onmouseout="this.style.transform='scale(1)'"
+                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2FhYWFhYSIgb3BhY2l0eT0iMC41Ij48cGF0aCBkPSJNMjEgMTlWNWMwLTEuMS0uOS0yLTItMkg1Yy0xLjEgMC0yIC45LTIgMnYxNGMwIDEuMS45IDIgMiAyaDE0YzEuMSAwIDItLjkgMi0yMnpNOC41IDEzLjVsMi41IDMuMDFMMTQuNSAxMmw0LjUgNkg1bDMuNS00LjV6Ii8+PC9zdmc+'" />
+                    </div>
+
+                    <h4 class="mt-2 text-white">@item.Name</h4>
+
+                    <div class="mt-3 p-2" style="background: rgba(0,0,0,0.2); border-radius: 10px;">
+                        <h6 class="text-muted small font-weight-bold mb-2">AVAILABLE VARIANTS</h6>
+                        @if (item.JerseyStocks != null && item.JerseyStocks.Any())
+                        {
+                            <table class="table table-sm table-borderless text-white mb-0" style="font-size: 0.85rem;">
+                                <thead>
+                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                        <th class="text-left">Size</th>
+                                        <th class="text-center">Price</th>
+                                        <th class="text-right">Qty</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var stock in item.JerseyStocks)
+                                    {
+                                        <tr>
+                                            <td class="text-left"><span class="badge badge-light">@stock.Size</span></td>
+                                            <td class="text-center text-success">$@stock.Price</td>
+                                            <td class="text-right">@stock.Quantity</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            <p class="text-muted small font-italic mb-0">No stock details added.</p>
+                        }
+                    </div>
+
+                    <hr style="border-color: rgba(255,255,255,0.1);" />
+
+                    <div class="d-flex justify-content-between mt-3">
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <button class="btn btn-sm btn-glass w-45" onclick="openEditModal(@item.JerseyId)">
+                                <i class="glyphicon glyphicon-pencil"></i> Edit
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger w-45" style="border-radius: 20px;" onclick="openDeleteModal(@item.JerseyId)">
+                                <i class="glyphicon glyphicon-trash"></i> Delete
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-glass btn-block">Order Now</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="modalContent">
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function openCreateModal() {
+            $.get("/Jerseys/Create", function (data) {
+                $("#modalContent").html(data);
+                $("#myModal").modal("show");
+            });
+        }
+
+        function closeModal() {
+            $("#myModal").modal("hide");
+        }
+
+        function openEditModal(id) {
+            $.get("/Jerseys/Edit/" + id, function (data) {
+                $("#modalContent").html(data);
+                $("#myModal").modal("show");
+            });
+        }
+
+        function openDeleteModal(id) {
+            $.get("/Jerseys/Delete/" + id, function (data) {
+                $("#modalContent").html(data);
+                $("#myModal").modal("show");
+            });
+        }
+
+        $(document).on("submit", "#createForm", function (e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+
+            $.ajax({
+                url: "/Jerseys/Create",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response.success) {
+                        $("#myModal").modal("hide");
+                        location.reload();
+                    } else {
+                        alert("Error: " + response.message);
+                    }
+                }
+            });
+        });
+
+        $(document).on("submit", "#editForm", function (e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+
+            $.ajax({
+                url: "/Jerseys/Edit",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response.success) {
+                        $("#myModal").modal("hide");
+                        location.reload();
+                    } else {
+                        alert("Error: " + response.message);
+                    }
+                }
+            });
+        });
+
+        $(document).on("submit", "#deleteForm", function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: "/Jerseys/Delete/" + $("#JerseyId").val(),
+                type: "POST",
+                data: $(this).serialize(),
+                success: function (response) {
+                    if (response.success) {
+                        $("#myModal").modal("hide");
+                        location.reload();
+                    } else {
+                        alert("Error: " + response.message);
+                    }
+                }
+            });
+        });
+
+        function addRow() {
+            var table = document.getElementById("stockTable").getElementsByTagName('tbody')[0];
+            var index = table.rows.length;
+            var newRow = table.insertRow(table.rows.length);
+
+            var sizeOptions = '<select class="form-control form-control-sm" name="Stocks[' + index + '].Size"><option value="0">S</option><option value="1">M</option><option value="2">L</option><option value="3">XL</option><option value="4">XXL</option></select>';
+
+            newRow.innerHTML = `
+                    <td>${sizeOptions}</td>
+                    <td><input class="form-control form-control-sm" name="Stocks[${index}].Price" type="number" value="0.00" /></td>
+                    <td><input class="form-control form-control-sm" name="Stocks[${index}].Quantity" type="number" value="0" /></td>
+                    <td><button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">X</button></td>
+                `;
+        }
+
+        function removeRow(btn) {
+            $(btn).closest("tr").remove();
+        }
+
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#imgPreview').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+}
+

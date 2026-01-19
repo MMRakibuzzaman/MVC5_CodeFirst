@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="text-center" style="padding: 100px 0 80px 0;">
+    <h1 class="display-1 font-weight-bold mb-3"
+        style="background: -webkit-linear-gradient(45deg, #ffffff, #a29bfe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -2px;">
+        THE COLLECTION
+    </h1>
+    <p class="lead text-white-50 mb-5" style="font-size: 1.5rem; letter-spacing: 1px;">
+        Curating the world's finest Sports kits. <br />
+        Rare finds. classics. Modern heat.
+    </p>
+
+    <div class="d-flex justify-content-center gap-3">
+        @Html.ActionLink("Browse Inventory", "Index", "Jerseys", null, new { @class = "btn btn-glass btn-lg px-5 py-3 font-weight-bold", style = "font-size: 1.2rem; border-radius: 50px;" })
+    </div>
+</div>
+

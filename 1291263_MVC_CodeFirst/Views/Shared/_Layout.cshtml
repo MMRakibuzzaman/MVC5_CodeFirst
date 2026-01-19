@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Hello-Kit</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;800&display=swap" rel="stylesheet">
+
+    <style>
+       
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm navbar-glass fixed-top">
+        <div class="container">
+            <a href="@Url.Action("Index", "Home")" class="navbar-brand brand-logo">
+                 Hello-Kit
+            </a>
+
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
+                <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+            </button>
+
+            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1 align-items-center ml-3">
+                    <li class="nav-item">@Html.ActionLink(" Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink(" Clubs", "Index", "Teams", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink(" Kits", "Index", "Jerseys", new { area = "" }, new { @class = "nav-link" })</li>
+                </ul>
+
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </nav>
+
+    <div class="container body-content" style="padding-top: 120px; min-height: 80vh;">
+        @RenderBody()
+
+        <footer>
+            <div class="mb-3">
+                <span style="font-size: 1.5rem; opacity: 0.8;">⚡</span>
+            </div>
+            <p class="text-uppercase font-weight-bold">Est. @DateTime.Now.Year — Crafted for the Ultimate Fan</p>
+            <div class="mt-4">
+                <a href="#" class="footer-link">INSTAGRAM</a>
+                <a href="#" class="footer-link">TWITTER</a>
+                <a href="#" class="footer-link">DISCORD</a>
+            </div>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
